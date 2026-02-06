@@ -5,6 +5,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
 <style>
 body {
     font-family: 'Segoe UI', sans-serif;
@@ -21,10 +23,19 @@ body {
     to { background-position: right; }
 }
 
+/* The Golden Melody Font Style */
+.golden-melody {
+    font-family: 'Great Vibes', cursive;
+    background: linear-gradient(to bottom, #cfac48 0%, #ffecb3 22%, #cfac48 50%, #85610d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.3));
+    font-weight: normal;
+}
+
 h1 {
-    font-size: 32px;
-    color: #ff1a75;
-    min-height: 60px;
+    font-size: 45px; /* Increased for better font visibility */
+    min-height: 80px;
 }
 
 button {
@@ -49,9 +60,8 @@ button {
 
 #celebration {
     display: none;
-    font-size: 24px;
+    font-size: 30px;
     margin-top: 25px;
-    color: #cc0066;
 }
 
 @keyframes colorChange {
@@ -63,6 +73,7 @@ button {
 
 .mixtape-link {
     text-decoration: none;
+    font-size: 18px;
     font-weight: bold;
     animation: colorChange 3s infinite;
 }
@@ -71,7 +82,6 @@ button {
     text-decoration: underline;
 }
 
-/* Fixed Toggle Button for Mobile */
 #musicToggleBtn {
     display: none; 
     position: fixed;
@@ -81,10 +91,9 @@ button {
     font-size: 14px;
     background-color: rgba(255, 255, 255, 0.9);
     color: #333;
-    border: 2px solid #ff1a75;
+    border: 2px solid #cfac48;
     border-radius: 50px;
     z-index: 1000;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
 }
 
 .dog {
@@ -120,7 +129,7 @@ button {
 <img id="dogGif" class="dog" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
 
 <div id="interaction-box">
-    <h1 id="typingText"></h1>
+    <h1 id="typingText" class="golden-melody"></h1>
     <div id="buttonContainer">
         <button id="yesBtn">Yes</button>
         <button id="noBtn">No</button>
@@ -128,15 +137,14 @@ button {
 </div>
 
 <div id="celebration">
-    ❤️ You just made me the happiest man on earth ❤️
-    <br><br>
+    <div class="golden-melody">❤️ You just made me the happiest man on earth ❤️</div>
+    <br>
     <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank" class="mixtape-link">
         Terry, click <span class="underline-text">here</span> for our mixtape 🎵
     </a>
 </div>
 
 <script>
-/* 1. Typing Logic */
 let text = "Tsuma, will you be my Valentine? 💖";
 let typingElement = document.getElementById("typingText");
 let index = 0;
@@ -150,7 +158,6 @@ function typeText() {
 }
 typeText();
 
-/* 2. Global Variables */
 let yesBtn = document.getElementById("yesBtn");
 let noBtn = document.getElementById("noBtn");
 let interactionBox = document.getElementById("interaction-box");
@@ -162,7 +169,6 @@ let noMessages = ["Are you sure?", "Really sure?", "Please reconsider 😢", "Do
 let noClickCount = 0;
 let yesSize = 18;
 
-/* 3. Button Behaviors */
 noBtn.onclick = function() {
     if (noClickCount < noMessages.length) {
         noBtn.innerText = noMessages[noClickCount];
@@ -184,20 +190,16 @@ yesBtn.onclick = function() {
     startHearts();
 };
 
-/* 4. The Toggle Mechanism */
 toggleBtn.onclick = function() {
     if (bgMusic.paused) {
         bgMusic.play();
         toggleBtn.innerText = "Stop Music 🔇";
-        toggleBtn.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
     } else {
         bgMusic.pause();
         toggleBtn.innerText = "Play Music 🎵";
-        toggleBtn.style.backgroundColor = "#ffccd5"; // Slight color change when paused
     }
 };
 
-/* 5. Effects */
 function createConfetti() {
     for (let i = 0; i < 100; i++) {
         let confetti = document.createElement("div");
