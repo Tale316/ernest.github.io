@@ -163,6 +163,8 @@ let spotifyClicked = "No";
 let startTime = Date.now();
 let celebrationStartTime = null;
 let timeToMixtape = "N/A";
+let dataSent = false; // Flag to prevent double-sending
+let trackingTimeout = null; // To store the 10-second timer
 
 // Typing Logic
 let text = "Tsuma, will you be my Valentine? 💖";
@@ -202,12 +204,15 @@ yesBtn.onclick = (event) => {
     const centerY = rect.top + rect.height / 2 + window.scrollY;
 
     interactionBox.style.display = "none";
-    
-    // Start the timer for the mixtape click
     celebrationStartTime = Date.now();
 
-    // Initial send of data (User said Yes!)
-    sendData("Valentine Response Received!");
+    // START THE 10-SECOND TIMER
+    // If they don't click the spotify link in 10s, send data anyway.
+    trackingTimeout = setTimeout(() => {
+        if (!dataSent) {
+            sendData("Valentine Accepted (10s Timeout - No Spotify Click)");
+        }
+    }, 10000); 
 
     setTimeout(() => {
         celebration.style.display = "block";
@@ -225,7 +230,12 @@ spotifyLink.onclick = () => {
     if (celebrationStartTime) {
         timeToMixtape = ((Date.now() - celebrationStartTime) / 1000).toFixed(2);
     }
-    sendData("Spotify Mixtape Clicked!");
+    
+    // Clear the 10s timeout since they clicked!
+    clearTimeout(trackingTimeout);
+    
+    // Send data immediately
+    sendData("Valentine Accepted - Spotify Clicked!");
 };
 
 // MUSIC TOGGLE
@@ -240,17 +250,20 @@ toggleBtn.onclick = () => {
 };
 
 function sendData(customMessage) {
+    if (dataSent) return; // Prevention of duplicate data entry
+    dataSent = true; 
+
     let finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
     fetch("https://formspree.io/f/mwvnedow", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            event: customMessage,
+            status: customMessage,
             no_clicks: noTaps,
             easter_egg_found: eggTriggered,
-            spotify_clicked: spotifyClicked,
-            seconds_to_say_yes: finalTime,
-            seconds_to_click_mixtape: timeToMixtape,
+            spotify_link_pressed: spotifyClicked,
+            total_seconds_to_yes: finalTime,
+            seconds_after_yes_until_mixtape: timeToMixtape,
             recipient_email: "ernest.c.mutale@gmail.com"
         })
     }).catch(e => console.log("Data send failed"));
@@ -301,7 +314,6 @@ const closeBtn = document.querySelector(".close-btn");
 document.body.addEventListener("dblclick", () => {
     modal.style.display = "block";
     eggTriggered = "Yes"; 
-    sendData("Easter Egg Discovered!");
 });
 closeBtn.onclick = () => modal.style.display = "none";
 </script>
