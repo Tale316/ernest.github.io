@@ -206,7 +206,7 @@ function sendData() {
     let finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
     
     // Replace 'YOUR_FORMSPREE_ID' with the ID you get from formspree.io
-    fetch("https://formspree.io/f/xwvnedlw", {
+    fetch("https://formspree.io/f/mwvnedow", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -214,7 +214,7 @@ function sendData() {
             no_clicks: noTaps,
             easter_egg_found: eggTriggered,
             seconds_to_say_yes: finalTime,
-            recipient_email: "mutalechama316@gmail.com"
+            recipient_email: "ernest.c.mutale@gmail.com"
         })
     });
 }
