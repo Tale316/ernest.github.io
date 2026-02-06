@@ -1,25 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Valentine Question</title>
+<title>Valentine Question</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 
 body {
     font-family: 'Segoe UI', sans-serif;
     text-align: center;
-    background: linear-gradient(to bottom right, #ffccd5, #ffe6f0);
-    margin-top: 50px;
+    background: linear-gradient(45deg, #ffccd5, #ffe6f0, #ffd6e0);
+    background-size: 300% 300%;
+    animation: sparkle 8s infinite alternate;
+    margin: 20px;
+}
+
+@keyframes sparkle {
+    from { background-position: left; }
+    to { background-position: right; }
 }
 
 h1 {
-    font-size: 42px;
+    font-size: 32px;
     color: #ff1a75;
+    min-height: 60px;
 }
 
 button {
-    padding: 15px 30px;
-    font-size: 20px;
+    padding: 15px 25px;
+    font-size: 18px;
     margin: 10px;
     border: none;
     border-radius: 12px;
@@ -39,40 +49,32 @@ button {
 
 #celebration {
     display: none;
-    font-size: 28px;
-    margin-top: 30px;
+    font-size: 24px;
+    margin-top: 25px;
     color: #cc0066;
 }
 
-a {
-    font-size: 22px;
-    color: purple;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
 .dog {
-    width: 250px;
+    width: 80%;
+    max-width: 250px;
     border-radius: 20px;
-    margin-bottom: 20px;
 }
 
-.confetti {
+iframe {
+    margin-top: 20px;
+    border-radius: 15px;
+}
+
+.heart {
     position: fixed;
-    width: 10px;
-    height: 10px;
-    top: -10px;
-    animation: fall linear forwards;
+    color: red;
+    animation: floatUp 5s linear forwards;
+    font-size: 20px;
 }
 
-@keyframes fall {
-    to {
-        transform: translateY(100vh);
-    }
+@keyframes floatUp {
+    from { transform: translateY(100vh); opacity: 1; }
+    to { transform: translateY(-10vh); opacity: 0; }
 }
 
 </style>
@@ -80,36 +82,53 @@ a:hover {
 
 <body>
 
-<!-- Cute Dog GIF -->
 <img class="dog" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
 
-<h1>Tsuma, will you be my Valentine? 💖</h1>
+<h1 id="typingText"></h1>
 
 <button id="yesBtn">Yes</button>
 <button id="noBtn">No</button>
 
 <div id="celebration">
-    ❤️ You just made me the happiest man on earth ❤️
-    <br><br>
 
-    <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank">
-        Click here for our playlist 🎵
-    </a>
+❤️ You just made me the happiest man on earth ❤️
+<br><br>
 
-    <br><br>
+<a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank">
+Click here for our playlist 🎵
+</a>
 
-    <!-- Taylor Swift Enchanted -->
-    <iframe id="song"
-        width="0"
-        height="0"
-        src=""
-        frameborder="0"
-        allow="autoplay">
-    </iframe>
+<br><br>
+
+<!-- Taylor Swift Player -->
+<iframe id="song"
+width="300"
+height="170"
+src=""
+allow="autoplay">
+</iframe>
 
 </div>
 
 <script>
+
+/* Typing Animation */
+
+let text = "Tsuma, will you be my Valentine? 💖";
+let typingElement = document.getElementById("typingText");
+let index = 0;
+
+function typeText() {
+    if (index < text.length) {
+        typingElement.innerHTML += text.charAt(index);
+        index++;
+        setTimeout(typeText, 60);
+    }
+}
+
+typeText();
+
+/* Buttons */
 
 let yesBtn = document.getElementById("yesBtn");
 let noBtn = document.getElementById("noBtn");
@@ -127,7 +146,7 @@ let noMessages = [
 ];
 
 let noClickCount = 0;
-let yesSize = 20;
+let yesSize = 18;
 
 noBtn.onclick = function() {
 
@@ -137,9 +156,9 @@ noBtn.onclick = function() {
 
     noClickCount++;
 
-    yesSize += 10;
+    yesSize += 8;
     yesBtn.style.fontSize = yesSize + "px";
-    yesBtn.style.padding = (yesSize) + "px " + (yesSize * 2) + "px";
+    yesBtn.style.padding = (yesSize) + "px " + (yesSize * 1.5) + "px";
 };
 
 yesBtn.onclick = function() {
@@ -147,31 +166,60 @@ yesBtn.onclick = function() {
     celebration.style.display = "block";
 
     createConfetti();
+    startHearts();
 
-    // Plays Taylor Swift Enchanted from YouTube
+    /* Play Taylor Swift */
     song.src = "https://www.youtube.com/embed/fvg01G6fo0s?autoplay=1";
 };
 
+/* Confetti */
+
 function createConfetti() {
 
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 100; i++) {
 
         let confetti = document.createElement("div");
-        confetti.classList.add("confetti");
-
+        confetti.style.position = "fixed";
+        confetti.style.width = "8px";
+        confetti.style.height = "8px";
         confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.top = "-10px";
         confetti.style.backgroundColor =
             "hsl(" + Math.random() * 360 + ", 100%, 50%)";
 
-        confetti.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        confetti.style.animation = "floatUp 4s linear forwards";
 
         document.body.appendChild(confetti);
 
-        setTimeout(() => {
-            confetti.remove();
-        }, 5000);
+        setTimeout(() => confetti.remove(), 4000);
     }
 }
+
+/* Floating Hearts */
+
+function startHearts() {
+
+    setInterval(() => {
+
+        let heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 15 + "px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 5000);
+
+    }, 400);
+}
+
+/* Secret Easter Egg */
+
+document.body.addEventListener("dblclick", () => {
+    alert("Secret unlocked: You are loved more than you know 💕");
+});
 
 </script>
 
