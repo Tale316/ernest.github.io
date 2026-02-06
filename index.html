@@ -8,13 +8,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
+/* Body acts as the background/centering environment */
 body {
     font-family: 'Segoe UI', sans-serif;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     background: linear-gradient(45deg, #ffccd5, #ffe6f0, #ffd6e0);
     background-size: 300% 300%;
     animation: sparkle 8s infinite alternate;
-    margin: 20px;
+    margin: 0;
     overflow-x: hidden;
 }
 
@@ -23,7 +27,20 @@ body {
     to { background-position: right; }
 }
 
-/* The Golden Melody Font Style */
+/* The Main Container (The Card) */
+.main-card {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px); /* Modern glassmorphism effect */
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    display: inline-block; /* Crucial: allows container to grow with content */
+    max-width: 90%;
+    text-align: center;
+    transition: all 0.3s ease; /* Smooth growing animation */
+}
+
 .golden-melody {
     font-family: 'Great Vibes', cursive;
     background: linear-gradient(to bottom, #cfac48 0%, #ffecb3 22%, #cfac48 50%, #85610d 100%);
@@ -34,8 +51,9 @@ body {
 }
 
 h1 {
-    font-size: 45px; /* Increased for better font visibility */
+    font-size: 45px;
     min-height: 80px;
+    margin-top: 20px;
 }
 
 button {
@@ -46,6 +64,7 @@ button {
     border-radius: 12px;
     cursor: pointer;
     transition: 0.3s;
+    white-space: nowrap; /* Prevents button text from wrapping as it grows */
 }
 
 #yesBtn {
@@ -97,10 +116,9 @@ button {
 }
 
 .dog {
-    width: 80%;
+    width: 100%;
     max-width: 250px;
     border-radius: 20px;
-    margin-bottom: 20px;
 }
 
 .heart {
@@ -126,22 +144,26 @@ button {
 
 <button id="musicToggleBtn">Stop Music 🔇</button>
 
-<img id="dogGif" class="dog" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
+<div class="main-card">
+    
+    <img id="dogGif" class="dog" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
 
-<div id="interaction-box">
-    <h1 id="typingText" class="golden-melody"></h1>
-    <div id="buttonContainer">
-        <button id="yesBtn">Yes</button>
-        <button id="noBtn">No</button>
+    <div id="interaction-box">
+        <h1 id="typingText" class="golden-melody"></h1>
+        <div id="buttonContainer">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
     </div>
-</div>
 
-<div id="celebration">
-    <div class="golden-melody">❤️ You just made me the happiest man on earth ❤️</div>
-    <br>
-    <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank" class="mixtape-link">
-        Terry, click <span class="underline-text">here</span> for our mixtape 🎵
-    </a>
+    <div id="celebration">
+        <div class="golden-melody">❤️ You just made me the happiest man on earth ❤️</div>
+        <br>
+        <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank" class="mixtape-link">
+            Terry, click <span class="underline-text">here</span> for our mixtape 🎵
+        </a>
+    </div>
+
 </div>
 
 <script>
@@ -174,9 +196,9 @@ noBtn.onclick = function() {
         noBtn.innerText = noMessages[noClickCount];
     }
     noClickCount++;
-    yesSize += 10;
+    yesSize += 12; // Adjusted growth for better container scaling
     yesBtn.style.fontSize = yesSize + "px";
-    yesBtn.style.padding = (yesSize) + "px " + (yesSize * 1.5) + "px";
+    yesBtn.style.padding = (yesSize) + "px " + (yesSize * 1.2) + "px";
 };
 
 yesBtn.onclick = function() {
