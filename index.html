@@ -54,6 +54,39 @@ button {
     color: #cc0066;
 }
 
+/* Color changing animation for the mixtape link */
+@keyframes colorChange {
+    0% { color: #ff1a75; }
+    33% { color: #1DB954; }
+    66% { color: #007bff; }
+    100% { color: #ff1a75; }
+}
+
+.mixtape-link {
+    text-decoration: none;
+    font-weight: bold;
+    animation: colorChange 3s infinite;
+}
+
+.underline-text {
+    text-decoration: underline;
+}
+
+/* Mobile-optimized Stop Button */
+#stopMusicBtn {
+    display: none; /* Hidden until music starts */
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 10px 15px;
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0.7);
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    z-index: 1000;
+}
+
 .dog {
     width: 80%;
     max-width: 250px;
@@ -73,17 +106,16 @@ button {
     from { transform: translateY(100vh); opacity: 1; }
     to { transform: translateY(-10vh); opacity: 0; }
 }
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-}
 </style>
 </head>
 
 <body>
 
-<audio id="bgMusic" src="https://cdn.discordapp.com/attachments/1174443993770237994/1469259438983479398/Taylor_Swift_-_Enchanted_Taylors_Version.m4a?ex=698701fb&is=6985b07b&hm=c5fde5202b77597d334f5a1dd698daa0b15634f2353b76495af534574f89d3ed&"></audio>
+<audio id="bgMusic">
+    <source src="https://cdn.discordapp.com/attachments/1174443993770237994/1469259438983479398/Taylor_Swift_-_Enchanted_Taylors_Version.m4a?ex=698701fb&is=6985b07b&hm=c5fde5202b77597d334f5a1dd698daa0b15634f2353b76495af534574f89d3ed&" type="audio/mp4">
+</audio>
+
+<button id="stopMusicBtn">Stop Music 🔇</button>
 
 <img id="dogGif" class="dog" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
 
@@ -98,13 +130,12 @@ button {
 <div id="celebration">
     ❤️ You just made me the happiest man on earth ❤️
     <br><br>
-    <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank" style="text-decoration: none; color: #1DB954; font-weight: bold;">
-        Terry, click here for our mixtape 🎵
+    <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank" class="mixtape-link">
+        Terry, click <span class="underline-text">here</span> for our mixtape 🎵
     </a>
 </div>
 
 <script>
-/* 1. Typing Animation Logic */
 let text = "Tsuma, will you be my Valentine? 💖";
 let typingElement = document.getElementById("typingText");
 let index = 0;
@@ -118,23 +149,14 @@ function typeText() {
 }
 typeText();
 
-/* 2. Button and Display Logic */
 let yesBtn = document.getElementById("yesBtn");
 let noBtn = document.getElementById("noBtn");
 let interactionBox = document.getElementById("interaction-box");
 let celebration = document.getElementById("celebration");
 let bgMusic = document.getElementById("bgMusic");
+let stopBtn = document.getElementById("stopMusicBtn");
 
-let noMessages = [
-    "Are you sure?",
-    "Really sure?",
-    "Please reconsider 😢",
-    "Don't do this to me",
-    "I baked cookies...",
-    "Last chance 🥺",
-    "You're breaking my heart 💔"
-];
-
+let noMessages = ["Are you sure?", "Really sure?", "Please reconsider 😢", "Don't do this to me", "Last chance 🥺", "You're breaking my heart 💔"];
 let noClickCount = 0;
 let yesSize = 18;
 
@@ -151,17 +173,21 @@ noBtn.onclick = function() {
 yesBtn.onclick = function() {
     interactionBox.style.display = "none";
     celebration.style.display = "block";
+    stopBtn.style.display = "block"; // Show stop button
 
-    // Start Audio
-    bgMusic.play().catch(error => {
-        console.log("Audio play failed: ", error);
-    });
+    bgMusic.play().catch(e => console.log("Playback blocked:", e));
 
     createConfetti();
     startHearts();
 };
 
-/* 3. Visual Effects */
+/* Stop Music Logic */
+stopBtn.onclick = function() {
+    bgMusic.pause();
+    bgMusic.currentTime = 0; // Reset song to start
+    stopBtn.style.display = "none"; // Hide button after stopping
+};
+
 function createConfetti() {
     for (let i = 0; i < 100; i++) {
         let confetti = document.createElement("div");
@@ -188,10 +214,6 @@ function startHearts() {
         setTimeout(() => heart.remove(), 5000);
     }, 400);
 }
-
-document.body.addEventListener("dblclick", () => {
-    alert("Secret unlocked: You are loved more than you know 💕");
-});
 </script>
 
 </body>
