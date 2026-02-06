@@ -3,7 +3,7 @@
 <head>
 <title>Valentine Question</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
@@ -20,6 +20,8 @@ body {
     animation: sparkle 8s infinite alternate;
     margin: 0;
     overflow-x: hidden;
+    /* Ensure touches register nicely */
+    touch-action: manipulation; 
 }
 
 @keyframes sparkle {
@@ -29,7 +31,7 @@ body {
 
 /* The Main Container (The Card) */
 .main-card {
-    background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for better contrast */
+    background: rgba(255, 255, 255, 0.7); 
     backdrop-filter: blur(10px);
     padding: 40px;
     border-radius: 30px;
@@ -41,21 +43,19 @@ body {
     transition: all 0.3s ease; 
 }
 
-/* ADJUSTED GOLDEN TEXT FOR READABILITY */
+/* Darker Gold Gradient for Readability */
 .golden-melody {
     font-family: 'Great Vibes', cursive;
-    /* Darker gradient: Dark Goldenrod -> Deep Gold -> Saddle Brown */
     background: linear-gradient(to bottom, #B8860B 0%, #D4AF37 50%, #8B4513 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    /* Added a slightly stronger drop shadow for separation from background */
     filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.2));
     font-weight: normal;
-    padding-bottom: 10px; /* Prevents descenders (g, y, p) from being cut off */
+    padding-bottom: 10px; 
 }
 
 h1 {
-    font-size: 50px; /* Bumped up slightly */
+    font-size: 50px; 
     min-height: 80px;
     margin-top: 10px;
     line-height: 1.2;
@@ -100,7 +100,7 @@ button {
     font-size: 18px;
     font-weight: bold;
     animation: colorChange 3s infinite;
-    display: block; /* Ensures it sits nicely on its own line */
+    display: block; 
     margin-top: 20px;
 }
 
@@ -117,7 +117,7 @@ button {
     font-size: 14px;
     background-color: rgba(255, 255, 255, 0.9);
     color: #333;
-    border: 2px solid #B8860B; /* Matched border to the text gold */
+    border: 2px solid #B8860B; 
     border-radius: 50px;
     z-index: 1000;
 }
@@ -140,6 +140,53 @@ button {
     from { transform: translateY(100vh); opacity: 1; }
     to { transform: translateY(-10vh); opacity: 0; }
 }
+
+/* --- EASTER EGG POPUP STYLES --- */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 2000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0,0,0,0.5); 
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background-color: #fff0f5;
+    margin: 20% auto; /* 20% from the top and centered */
+    padding: 30px;
+    border: 3px solid #ff1a75;
+    border-radius: 20px;
+    width: 80%;
+    max-width: 300px;
+    text-align: center;
+    color: #cc0066;
+    font-size: 22px;
+    font-family: 'Great Vibes', cursive; /* Using the fancy font for the popup too */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.close-btn {
+    color: #ff1a75;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 20px;
+}
+
+.close-btn:hover {
+    color: #cc0066;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
 </style>
 </head>
 
@@ -150,6 +197,13 @@ button {
 </audio>
 
 <button id="musicToggleBtn">Stop Music 🔇</button>
+
+<div id="easterEggModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <p>Easter egg found : <br> I Love you more than you realize ❤️</p>
+    </div>
+</div>
 
 <div class="main-card">
     
@@ -202,7 +256,7 @@ noBtn.onclick = function() {
         noBtn.innerText = noMessages[noClickCount];
     }
     noClickCount++;
-    yesSize += 15; /* Increased growth rate */
+    yesSize += 15; 
     yesBtn.style.fontSize = yesSize + "px";
     yesBtn.style.padding = (yesSize) + "px " + (yesSize * 1.2) + "px";
 };
@@ -253,6 +307,27 @@ function startHearts() {
         document.body.appendChild(heart);
         setTimeout(() => heart.remove(), 5000);
     }, 400);
+}
+
+/* --- EASTER EGG LOGIC --- */
+let modal = document.getElementById("easterEggModal");
+let closeBtn = document.getElementsByClassName("close-btn")[0];
+
+// Double click/tap on body to show modal
+document.body.addEventListener("dblclick", () => {
+    modal.style.display = "block";
+});
+
+// Close when clicking (x)
+closeBtn.onclick = function() {
+    modal.style.display = "none";
+}
+
+// Close when clicking outside the modal box
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 </script>
 
