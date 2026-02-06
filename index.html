@@ -54,7 +54,6 @@ button {
     color: #cc0066;
 }
 
-/* Color changing animation for the mixtape link */
 @keyframes colorChange {
     0% { color: #ff1a75; }
     33% { color: #1DB954; }
@@ -72,19 +71,20 @@ button {
     text-decoration: underline;
 }
 
-/* Mobile-optimized Stop Button */
-#stopMusicBtn {
-    display: none; /* Hidden until music starts */
+/* Fixed Toggle Button for Mobile */
+#musicToggleBtn {
+    display: none; 
     position: fixed;
     bottom: 20px;
     left: 20px;
-    padding: 10px 15px;
+    padding: 12px 18px;
     font-size: 14px;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.9);
     color: #333;
-    border: 1px solid #ccc;
+    border: 2px solid #ff1a75;
     border-radius: 50px;
     z-index: 1000;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
 }
 
 .dog {
@@ -111,11 +111,11 @@ button {
 
 <body>
 
-<audio id="bgMusic">
+<audio id="bgMusic" loop>
     <source src="https://cdn.discordapp.com/attachments/1174443993770237994/1469259438983479398/Taylor_Swift_-_Enchanted_Taylors_Version.m4a?ex=698701fb&is=6985b07b&hm=c5fde5202b77597d334f5a1dd698daa0b15634f2353b76495af534574f89d3ed&" type="audio/mp4">
 </audio>
 
-<button id="stopMusicBtn">Stop Music 🔇</button>
+<button id="musicToggleBtn">Stop Music 🔇</button>
 
 <img id="dogGif" class="dog" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
 
@@ -136,6 +136,7 @@ button {
 </div>
 
 <script>
+/* 1. Typing Logic */
 let text = "Tsuma, will you be my Valentine? 💖";
 let typingElement = document.getElementById("typingText");
 let index = 0;
@@ -149,17 +150,19 @@ function typeText() {
 }
 typeText();
 
+/* 2. Global Variables */
 let yesBtn = document.getElementById("yesBtn");
 let noBtn = document.getElementById("noBtn");
 let interactionBox = document.getElementById("interaction-box");
 let celebration = document.getElementById("celebration");
 let bgMusic = document.getElementById("bgMusic");
-let stopBtn = document.getElementById("stopMusicBtn");
+let toggleBtn = document.getElementById("musicToggleBtn");
 
 let noMessages = ["Are you sure?", "Really sure?", "Please reconsider 😢", "Don't do this to me", "Last chance 🥺", "You're breaking my heart 💔"];
 let noClickCount = 0;
 let yesSize = 18;
 
+/* 3. Button Behaviors */
 noBtn.onclick = function() {
     if (noClickCount < noMessages.length) {
         noBtn.innerText = noMessages[noClickCount];
@@ -173,7 +176,7 @@ noBtn.onclick = function() {
 yesBtn.onclick = function() {
     interactionBox.style.display = "none";
     celebration.style.display = "block";
-    stopBtn.style.display = "block"; // Show stop button
+    toggleBtn.style.display = "block"; 
 
     bgMusic.play().catch(e => console.log("Playback blocked:", e));
 
@@ -181,13 +184,20 @@ yesBtn.onclick = function() {
     startHearts();
 };
 
-/* Stop Music Logic */
-stopBtn.onclick = function() {
-    bgMusic.pause();
-    bgMusic.currentTime = 0; // Reset song to start
-    stopBtn.style.display = "none"; // Hide button after stopping
+/* 4. The Toggle Mechanism */
+toggleBtn.onclick = function() {
+    if (bgMusic.paused) {
+        bgMusic.play();
+        toggleBtn.innerText = "Stop Music 🔇";
+        toggleBtn.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
+    } else {
+        bgMusic.pause();
+        toggleBtn.innerText = "Play Music 🎵";
+        toggleBtn.style.backgroundColor = "#ffccd5"; // Slight color change when paused
+    }
 };
 
+/* 5. Effects */
 function createConfetti() {
     for (let i = 0; i < 100; i++) {
         let confetti = document.createElement("div");
