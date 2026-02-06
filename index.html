@@ -10,7 +10,6 @@ body {
     font-family: 'Segoe UI', sans-serif;
     display: flex;
     justify-content: center;
-    /* MOVED HIGHER: Changed from center to flex-start + padding */
     align-items: flex-start;
     padding-top: 10vh; 
     min-height: 100vh;
@@ -30,7 +29,7 @@ body {
 .main-card {
     background: rgba(255, 255, 255, 0.7); 
     backdrop-filter: blur(10px);
-    padding: 30px; /* Reduced slightly for mobile */
+    padding: 30px;
     border-radius: 30px;
     box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.8);
@@ -39,7 +38,6 @@ body {
     text-align: center;
     position: relative;
     z-index: 10;
-    transition: all 0.5s ease;
 }
 
 .golden-melody {
@@ -48,7 +46,6 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.2));
-    font-weight: normal;
 }
 
 h1 { font-size: 42px; min-height: 80px; margin-top: 10px; }
@@ -66,7 +63,6 @@ button {
 #yesBtn { background-color: #4CAF50; color: white; }
 #noBtn { background-color: #ff4d4d; color: white; }
 
-/* SLOWER ENTRANCE: Added opacity and transition */
 #celebration { 
     display: none; 
     font-size: 30px; 
@@ -87,7 +83,7 @@ button {
 
 #musicToggleBtn {
     display: none; position: fixed; bottom: 30px; left: 50%;
-    transform: translateX(-50%); /* Centered on mobile for better ergonomics */
+    transform: translateX(-50%);
     padding: 12px 18px; font-size: 14px; background-color: rgba(255, 255, 255, 0.9);
     border: 2px solid #B8860B; border-radius: 50px; z-index: 1000;
 }
@@ -106,7 +102,6 @@ button {
 }
 
 .close-btn { float: right; font-size: 28px; cursor: pointer; font-family: sans-serif; }
-
 .confetti { position: fixed; pointer-events: none; z-index: 15; }
 .heart { position: fixed; color: red; animation: floatUp 5s linear forwards; z-index: 5; }
 
@@ -150,6 +145,12 @@ button {
 </div>
 
 <script>
+// TRACKING DATA
+let noTaps = 0;
+let eggTriggered = "No";
+let startTime = Date.now();
+
+// Typing Logic
 let text = "Tsuma, will you be my Valentine? 💖";
 let typingElement = document.getElementById("typingText");
 let index = 0;
@@ -170,12 +171,11 @@ const bgMusic = document.getElementById("bgMusic");
 const toggleBtn = document.getElementById("musicToggleBtn");
 
 let noMessages = ["Are you sure?", "Really sure?", "Please reconsider 😢", "Don't do this to me", "Last chance 🥺", "You're breaking my heart 💔"];
-let noClickCount = 0;
 let yesSize = 18;
 
 noBtn.onclick = () => {
-    if (noClickCount < noMessages.length) noBtn.innerText = noMessages[noClickCount];
-    noClickCount++;
+    noTaps++; // Record the "No" tap
+    if (noTaps <= noMessages.length) noBtn.innerText = noMessages[noTaps - 1];
     yesSize += 15;
     yesBtn.style.fontSize = yesSize + "px";
     yesBtn.style.padding = `${yesSize}px ${yesSize * 1.2}px`;
@@ -186,32 +186,40 @@ yesBtn.onclick = (event) => {
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
-    // STEP 1: Hide buttons immediately
     interactionBox.style.display = "none";
     
-    // STEP 2: Delay the celebration to make it feel more natural
+    // SEND DATA TO YOUR EMAIL
+    sendData();
+
     setTimeout(() => {
         celebration.style.display = "block";
-        // Force a tiny reflow for the opacity transition to work
         setTimeout(() => { celebration.style.opacity = "1"; }, 50);
-        
         toggleBtn.style.display = "block"; 
         bgMusic.play().catch(e => console.log("Blocked:", e));
         fireConfetti(centerX, centerY);
         startHearts();
-    }, 800); // 800ms delay - enough time to process the click
+    }, 800);
 };
 
-toggleBtn.onclick = () => {
-    if (bgMusic.paused) {
-        bgMusic.play();
-        toggleBtn.innerText = "Stop Music 🔇";
-    } else {
-        bgMusic.pause();
-        toggleBtn.innerText = "Play Music 🎵";
-    }
-};
+// DATA SUBMISSION FUNCTION
+function sendData() {
+    let finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
+    
+    // Replace 'YOUR_FORMSPREE_ID' with the ID you get from formspree.io
+    fetch("https://formspree.io/f/Ernest Chama Mutale jr", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            message: "Valentine Response Received!",
+            no_clicks: noTaps,
+            easter_egg_found: eggTriggered,
+            seconds_to_say_yes: finalTime,
+            recipient_email: "mutalechama316@gmail.com"
+        })
+    });
+}
 
+// REST OF PHYSICS LOGIC
 function fireConfetti(startX, startY) {
     const count = 150;
     const particles = [];
@@ -224,10 +232,8 @@ function fireConfetti(startX, startY) {
         document.body.appendChild(p);
         particles.push({
             el: p, x: startX, y: startY,
-            vX: (Math.random() - 0.5) * 30,
-            vY: (Math.random() - 1.2) * 25,
-            gravity: 0.6, drag: 0.96,
-            rotation: Math.random() * 360, vR: Math.random() * 10 - 5
+            vX: (Math.random() - 0.5) * 30, vY: (Math.random() - 1.2) * 25,
+            gravity: 0.6, drag: 0.96, rotation: Math.random() * 360, vR: Math.random() * 10 - 5
         });
     }
     function update() {
@@ -256,7 +262,10 @@ function startHearts() {
 
 const modal = document.getElementById("easterEggModal");
 const closeBtn = document.querySelector(".close-btn");
-document.body.addEventListener("dblclick", () => modal.style.display = "block");
+document.body.addEventListener("dblclick", () => {
+    modal.style.display = "block";
+    eggTriggered = "Yes"; // Record that she found it!
+});
 closeBtn.onclick = () => modal.style.display = "none";
 </script>
 
