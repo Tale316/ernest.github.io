@@ -74,10 +74,6 @@ button {
     to { transform: translateY(-10vh); opacity: 0; }
 }
 
-#musicContainer iframe {
-    animation: fadeIn 1.5s ease-in;
-}
-
 @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
@@ -86,6 +82,8 @@ button {
 </head>
 
 <body>
+
+<audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
 
 <img id="dogGif" class="dog" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
 
@@ -103,8 +101,6 @@ button {
     <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank" style="text-decoration: none; color: #1DB954; font-weight: bold;">
         Terry, click here for our mixtape 🎵
     </a>
-    <br><br>
-    <div id="musicContainer"></div>
 </div>
 
 <script>
@@ -127,7 +123,7 @@ let yesBtn = document.getElementById("yesBtn");
 let noBtn = document.getElementById("noBtn");
 let interactionBox = document.getElementById("interaction-box");
 let celebration = document.getElementById("celebration");
-let musicContainer = document.getElementById("musicContainer");
+let bgMusic = document.getElementById("bgMusic");
 
 let noMessages = [
     "Are you sure?",
@@ -147,33 +143,22 @@ noBtn.onclick = function() {
         noBtn.innerText = noMessages[noClickCount];
     }
     noClickCount++;
-    // Increase Yes button size to make it easier to click
     yesSize += 10;
     yesBtn.style.fontSize = yesSize + "px";
     yesBtn.style.padding = (yesSize) + "px " + (yesSize * 1.5) + "px";
 };
 
 yesBtn.onclick = function() {
-    // HIDE the question and buttons
     interactionBox.style.display = "none";
-
-    // SHOW the celebration message
     celebration.style.display = "block";
+
+    // Start Audio
+    bgMusic.play().catch(error => {
+        console.log("Audio play failed: ", error);
+    });
 
     createConfetti();
     startHearts();
-
-    // Load the music
-    musicContainer.innerHTML = `
-        <iframe 
-        width="220" 
-        height="124"
-        style="border-radius:15px; margin-top:15px;"
-        src="https://www.youtube.com/embed/Zm61zM5R0Ss?autoplay=1"
-        allow="autoplay; encrypted-media"
-        allowfullscreen>
-        </iframe>
-    `;
 };
 
 /* 3. Visual Effects */
@@ -204,7 +189,6 @@ function startHearts() {
     }, 400);
 }
 
-/* Easter Egg */
 document.body.addEventListener("dblclick", () => {
     alert("Secret unlocked: You are loved more than you know 💕");
 });
