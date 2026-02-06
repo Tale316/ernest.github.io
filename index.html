@@ -86,7 +86,8 @@ button {
 
 <body>
 
-<img class="dog" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
+<!-- Dog GIF -->
+<img id="dogGif" class="dog" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
 
 <h1 id="typingText"></h1>
 
@@ -131,6 +132,7 @@ let yesBtn = document.getElementById("yesBtn");
 let noBtn = document.getElementById("noBtn");
 let celebration = document.getElementById("celebration");
 let musicContainer = document.getElementById("musicContainer");
+let dogGif = document.getElementById("dogGif");
 
 let noMessages = [
     "Are you sure?",
@@ -159,6 +161,11 @@ noBtn.onclick = function() {
 };
 
 yesBtn.onclick = function() {
+
+    /* Remove dog GIF */
+    if (dogGif) {
+        dogGif.remove();
+    }
 
     celebration.style.display = "block";
 
