@@ -29,31 +29,36 @@ body {
 
 /* The Main Container (The Card) */
 .main-card {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px); /* Modern glassmorphism effect */
+    background: rgba(255, 255, 255, 0.7); /* Slightly more opaque for better contrast */
+    backdrop-filter: blur(10px);
     padding: 40px;
     border-radius: 30px;
     box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.8);
-    display: inline-block; /* Crucial: allows container to grow with content */
+    display: inline-block; 
     max-width: 90%;
     text-align: center;
-    transition: all 0.3s ease; /* Smooth growing animation */
+    transition: all 0.3s ease; 
 }
 
+/* ADJUSTED GOLDEN TEXT FOR READABILITY */
 .golden-melody {
     font-family: 'Great Vibes', cursive;
-    background: linear-gradient(to bottom, #cfac48 0%, #ffecb3 22%, #cfac48 50%, #85610d 100%);
+    /* Darker gradient: Dark Goldenrod -> Deep Gold -> Saddle Brown */
+    background: linear-gradient(to bottom, #B8860B 0%, #D4AF37 50%, #8B4513 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.3));
+    /* Added a slightly stronger drop shadow for separation from background */
+    filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.2));
     font-weight: normal;
+    padding-bottom: 10px; /* Prevents descenders (g, y, p) from being cut off */
 }
 
 h1 {
-    font-size: 45px;
+    font-size: 50px; /* Bumped up slightly */
     min-height: 80px;
-    margin-top: 20px;
+    margin-top: 10px;
+    line-height: 1.2;
 }
 
 button {
@@ -64,7 +69,7 @@ button {
     border-radius: 12px;
     cursor: pointer;
     transition: 0.3s;
-    white-space: nowrap; /* Prevents button text from wrapping as it grows */
+    white-space: nowrap; 
 }
 
 #yesBtn {
@@ -79,7 +84,7 @@ button {
 
 #celebration {
     display: none;
-    font-size: 30px;
+    font-size: 35px;
     margin-top: 25px;
 }
 
@@ -95,6 +100,8 @@ button {
     font-size: 18px;
     font-weight: bold;
     animation: colorChange 3s infinite;
+    display: block; /* Ensures it sits nicely on its own line */
+    margin-top: 20px;
 }
 
 .underline-text {
@@ -110,7 +117,7 @@ button {
     font-size: 14px;
     background-color: rgba(255, 255, 255, 0.9);
     color: #333;
-    border: 2px solid #cfac48;
+    border: 2px solid #B8860B; /* Matched border to the text gold */
     border-radius: 50px;
     z-index: 1000;
 }
@@ -158,7 +165,6 @@ button {
 
     <div id="celebration">
         <div class="golden-melody">❤️ You just made me the happiest man on earth ❤️</div>
-        <br>
         <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank" class="mixtape-link">
             Terry, click <span class="underline-text">here</span> for our mixtape 🎵
         </a>
@@ -196,7 +202,7 @@ noBtn.onclick = function() {
         noBtn.innerText = noMessages[noClickCount];
     }
     noClickCount++;
-    yesSize += 12; // Adjusted growth for better container scaling
+    yesSize += 15; /* Increased growth rate */
     yesBtn.style.fontSize = yesSize + "px";
     yesBtn.style.padding = (yesSize) + "px " + (yesSize * 1.2) + "px";
 };
