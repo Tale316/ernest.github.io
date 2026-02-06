@@ -10,7 +10,9 @@ body {
     font-family: 'Segoe UI', sans-serif;
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* MOVED HIGHER: Changed from center to flex-start + padding */
+    align-items: flex-start;
+    padding-top: 10vh; 
     min-height: 100vh;
     background: linear-gradient(45deg, #ffccd5, #ffe6f0, #ffd6e0);
     background-size: 300% 300%;
@@ -28,15 +30,16 @@ body {
 .main-card {
     background: rgba(255, 255, 255, 0.7); 
     backdrop-filter: blur(10px);
-    padding: 40px;
+    padding: 30px; /* Reduced slightly for mobile */
     border-radius: 30px;
     box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.8);
     display: inline-block; 
-    max-width: 90%;
+    max-width: 85%;
     text-align: center;
     position: relative;
     z-index: 10;
+    transition: all 0.5s ease;
 }
 
 .golden-melody {
@@ -48,7 +51,7 @@ body {
     font-weight: normal;
 }
 
-h1 { font-size: 50px; min-height: 80px; margin-top: 10px; }
+h1 { font-size: 42px; min-height: 80px; margin-top: 10px; }
 
 button {
     padding: 15px 25px;
@@ -63,7 +66,14 @@ button {
 #yesBtn { background-color: #4CAF50; color: white; }
 #noBtn { background-color: #ff4d4d; color: white; }
 
-#celebration { display: none; font-size: 35px; margin-top: 25px; }
+/* SLOWER ENTRANCE: Added opacity and transition */
+#celebration { 
+    display: none; 
+    font-size: 30px; 
+    margin-top: 25px;
+    opacity: 0;
+    transition: opacity 1.5s ease-in;
+}
 
 .mixtape-link {
     text-decoration: none; font-size: 18px; font-weight: bold;
@@ -75,17 +85,15 @@ button {
     50% { color: #1DB954; }
 }
 
-.underline-text { text-decoration: underline; }
-
 #musicToggleBtn {
-    display: none; position: fixed; bottom: 20px; left: 20px;
+    display: none; position: fixed; bottom: 30px; left: 50%;
+    transform: translateX(-50%); /* Centered on mobile for better ergonomics */
     padding: 12px 18px; font-size: 14px; background-color: rgba(255, 255, 255, 0.9);
     border: 2px solid #B8860B; border-radius: 50px; z-index: 1000;
 }
 
-.dog { width: 100%; max-width: 250px; border-radius: 20px; }
+.dog { width: 100%; max-width: 220px; border-radius: 20px; }
 
-/* Modal Styles */
 .modal {
     display: none; position: fixed; z-index: 2000; left: 0; top: 0;
     width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);
@@ -99,19 +107,8 @@ button {
 
 .close-btn { float: right; font-size: 28px; cursor: pointer; font-family: sans-serif; }
 
-/* Physics elements */
-.confetti {
-    position: fixed;
-    pointer-events: none;
-    z-index: 15;
-}
-
-.heart {
-    position: fixed;
-    color: red;
-    animation: floatUp 5s linear forwards;
-    z-index: 5;
-}
+.confetti { position: fixed; pointer-events: none; z-index: 15; }
+.heart { position: fixed; color: red; animation: floatUp 5s linear forwards; z-index: 5; }
 
 @keyframes floatUp {
     from { transform: translateY(110vh); opacity: 1; }
@@ -153,7 +150,6 @@ button {
 </div>
 
 <script>
-// Typing Logic
 let text = "Tsuma, will you be my Valentine? 💖";
 let typingElement = document.getElementById("typingText");
 let index = 0;
@@ -166,7 +162,6 @@ function typeText() {
 }
 typeText();
 
-// UI Elements
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const interactionBox = document.getElementById("interaction-box");
@@ -187,19 +182,24 @@ noBtn.onclick = () => {
 };
 
 yesBtn.onclick = (event) => {
-    // Get button coordinates for the explosion
     const rect = yesBtn.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
+    // STEP 1: Hide buttons immediately
     interactionBox.style.display = "none";
-    celebration.style.display = "block";
-    toggleBtn.style.display = "block"; 
-    bgMusic.play().catch(e => console.log("Blocked:", e));
     
-    // Pass coordinates to the confetti function
-    fireConfetti(centerX, centerY);
-    startHearts();
+    // STEP 2: Delay the celebration to make it feel more natural
+    setTimeout(() => {
+        celebration.style.display = "block";
+        // Force a tiny reflow for the opacity transition to work
+        setTimeout(() => { celebration.style.opacity = "1"; }, 50);
+        
+        toggleBtn.style.display = "block"; 
+        bgMusic.play().catch(e => console.log("Blocked:", e));
+        fireConfetti(centerX, centerY);
+        startHearts();
+    }, 800); // 800ms delay - enough time to process the click
 };
 
 toggleBtn.onclick = () => {
@@ -212,49 +212,30 @@ toggleBtn.onclick = () => {
     }
 };
 
-/* NATURAL CONFETTI PHYSICS FROM BUTTON ORIGIN */
 function fireConfetti(startX, startY) {
     const count = 150;
     const particles = [];
-    
     for (let i = 0; i < count; i++) {
         const p = document.createElement('div');
         p.className = 'confetti';
-        const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
-        p.style.backgroundColor = color;
+        p.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
         p.style.width = Math.random() * 8 + 4 + 'px';
         p.style.height = Math.random() * 8 + 4 + 'px';
-        
         document.body.appendChild(p);
-        
         particles.push({
-            el: p,
-            x: startX,
-            y: startY,
-            vX: (Math.random() - 0.5) * 30, // Random horizontal blast
-            vY: (Math.random() - 1.2) * 25, // Stronger upward blast
-            gravity: 0.6,
-            drag: 0.96,
-            rotation: Math.random() * 360,
-            vR: Math.random() * 10 - 5
+            el: p, x: startX, y: startY,
+            vX: (Math.random() - 0.5) * 30,
+            vY: (Math.random() - 1.2) * 25,
+            gravity: 0.6, drag: 0.96,
+            rotation: Math.random() * 360, vR: Math.random() * 10 - 5
         });
     }
-
     function update() {
         particles.forEach((p, i) => {
-            p.vY += p.gravity;
-            p.vX *= p.drag;
-            p.vY *= p.drag;
-            p.x += p.vX;
-            p.y += p.vY;
-            p.rotation += p.vR;
-            
+            p.vY += p.gravity; p.vX *= p.drag; p.vY *= p.drag;
+            p.x += p.vX; p.y += p.vY; p.rotation += p.vR;
             p.el.style.transform = `translate(${p.x}px, ${p.y}px) rotate(${p.rotation}deg)`;
-            
-            if (p.y > window.innerHeight + 50) {
-                p.el.remove();
-                particles.splice(i, 1);
-            }
+            if (p.y > window.innerHeight + 50) { p.el.remove(); particles.splice(i, 1); }
         });
         if (particles.length > 0) requestAnimationFrame(update);
     }
