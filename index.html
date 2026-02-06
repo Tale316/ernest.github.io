@@ -163,8 +163,8 @@ let spotifyClicked = "No";
 let startTime = Date.now();
 let celebrationStartTime = null;
 let timeToMixtape = "N/A";
-let dataSent = false; // Flag to prevent double-sending
-let trackingTimeout = null; // To store the 10-second timer
+let dataSent = false; 
+let trackingTimeout = null; 
 
 // Typing Logic
 let text = "Tsuma, will you be my Valentine? 💖";
@@ -206,13 +206,10 @@ yesBtn.onclick = (event) => {
     interactionBox.style.display = "none";
     celebrationStartTime = Date.now();
 
-    // START THE 10-SECOND TIMER
-    // If they don't click the spotify link in 10s, send data anyway.
+    // 20-SECOND TIMEOUT
     trackingTimeout = setTimeout(() => {
-        if (!dataSent) {
-            sendData("Valentine Accepted (10s Timeout - No Spotify Click)");
-        }
-    }, 10000); 
+        sendData("Valentine Accepted (20s Timeout reached)");
+    }, 20000); 
 
     setTimeout(() => {
         celebration.style.display = "block";
@@ -230,13 +227,17 @@ spotifyLink.onclick = () => {
     if (celebrationStartTime) {
         timeToMixtape = ((Date.now() - celebrationStartTime) / 1000).toFixed(2);
     }
-    
-    // Clear the 10s timeout since they clicked!
     clearTimeout(trackingTimeout);
-    
-    // Send data immediately
     sendData("Valentine Accepted - Spotify Clicked!");
 };
+
+// TAB CLOSED / LEAVING PAGE
+window.addEventListener("beforeunload", (event) => {
+    // Attempt to send data if they leave after saying Yes but before the 20s/Click
+    if (celebrationStartTime && !dataSent) {
+        sendData("User Closed Tab after Yes (Emergency Send)");
+    }
+});
 
 // MUSIC TOGGLE
 toggleBtn.onclick = () => {
@@ -250,14 +251,12 @@ toggleBtn.onclick = () => {
 };
 
 function sendData(customMessage) {
-    if (dataSent) return; // Prevention of duplicate data entry
+    if (dataSent) return; 
     dataSent = true; 
 
     let finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
-    fetch("https://formspree.io/f/mwvnedow", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+    
+    const payload = JSON.stringify({
             status: customMessage,
             no_clicks: noTaps,
             easter_egg_found: eggTriggered,
@@ -265,7 +264,14 @@ function sendData(customMessage) {
             total_seconds_to_yes: finalTime,
             seconds_after_yes_until_mixtape: timeToMixtape,
             recipient_email: "ernest.c.mutale@gmail.com"
-        })
+        });
+
+    // Use fetch, but for 'beforeunload' we use keepalive to ensure it finishes
+    fetch("https://formspree.io/f/mwvnedow", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+        keepalive: true 
     }).catch(e => console.log("Data send failed"));
 }
 
