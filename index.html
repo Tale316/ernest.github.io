@@ -11,13 +11,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 10vh; 
+    padding-top: 5vh; 
     min-height: 100vh;
     background: linear-gradient(45deg, #ffccd5, #ffe6f0, #ffd6e0);
     background-size: 300% 300%;
     animation: sparkle 8s infinite alternate;
     margin: 0;
-    overflow: hidden;
+    /* FIXED: Changed from hidden to auto to allow scrolling */
+    overflow-y: auto; 
+    overflow-x: hidden;
     touch-action: manipulation; 
 }
 
@@ -34,10 +36,12 @@ body {
     box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.8);
     display: inline-block; 
-    max-width: 85%;
+    width: 85%;
+    max-width: 400px;
     text-align: center;
     position: relative;
     z-index: 10;
+    margin-bottom: 100px; /* Space so it doesn't hit the music button */
 }
 
 .golden-melody {
@@ -82,10 +86,18 @@ button {
 }
 
 #musicToggleBtn {
-    display: none; position: fixed; bottom: 30px; left: 50%;
+    display: none; 
+    position: fixed; 
+    bottom: 20px; 
+    left: 50%;
     transform: translateX(-50%);
-    padding: 12px 18px; font-size: 14px; background-color: rgba(255, 255, 255, 0.9);
-    border: 2px solid #B8860B; border-radius: 50px; z-index: 1000;
+    padding: 12px 18px; 
+    font-size: 14px; 
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 2px solid #B8860B; 
+    border-radius: 50px; 
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .dog { width: 100%; max-width: 220px; border-radius: 20px; }
@@ -174,7 +186,7 @@ let noMessages = ["Are you sure?", "Really sure?", "Please reconsider 😢", "Do
 let yesSize = 18;
 
 noBtn.onclick = () => {
-    noTaps++; // Record the "No" tap
+    noTaps++;
     if (noTaps <= noMessages.length) noBtn.innerText = noMessages[noTaps - 1];
     yesSize += 15;
     yesBtn.style.fontSize = yesSize + "px";
@@ -183,12 +195,12 @@ noBtn.onclick = () => {
 
 yesBtn.onclick = (event) => {
     const rect = yesBtn.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
+    const centerX = rect.left + rect.width / 2 + window.scrollX;
+    const centerY = rect.top + rect.height / 2 + window.scrollY;
 
     interactionBox.style.display = "none";
     
-    // SEND DATA TO YOUR EMAIL
+    // SEND DATA (Replace YOUR_FORMSPREE_ID when you get it)
     sendData();
 
     setTimeout(() => {
@@ -201,11 +213,19 @@ yesBtn.onclick = (event) => {
     }, 800);
 };
 
-// DATA SUBMISSION FUNCTION
+// MUSIC TOGGLE - FIXED
+toggleBtn.onclick = () => {
+    if (bgMusic.paused) {
+        bgMusic.play();
+        toggleBtn.innerText = "Stop Music 🔇";
+    } else {
+        bgMusic.pause();
+        toggleBtn.innerText = "Play Music 🎵";
+    }
+};
+
 function sendData() {
     let finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
-    
-    // Replace 'YOUR_FORMSPREE_ID' with the ID you get from formspree.io
     fetch("https://formspree.io/f/mwvnedow", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -216,10 +236,9 @@ function sendData() {
             seconds_to_say_yes: finalTime,
             recipient_email: "ernest.c.mutale@gmail.com"
         })
-    });
+    }).catch(e => console.log("Data send failed (expected if ID not set)"));
 }
 
-// REST OF PHYSICS LOGIC
 function fireConfetti(startX, startY) {
     const count = 150;
     const particles = [];
@@ -241,7 +260,7 @@ function fireConfetti(startX, startY) {
             p.vY += p.gravity; p.vX *= p.drag; p.vY *= p.drag;
             p.x += p.vX; p.y += p.vY; p.rotation += p.vR;
             p.el.style.transform = `translate(${p.x}px, ${p.y}px) rotate(${p.rotation}deg)`;
-            if (p.y > window.innerHeight + 50) { p.el.remove(); particles.splice(i, 1); }
+            if (p.y > window.innerHeight + window.scrollY + 100) { p.el.remove(); particles.splice(i, 1); }
         });
         if (particles.length > 0) requestAnimationFrame(update);
     }
@@ -264,7 +283,7 @@ const modal = document.getElementById("easterEggModal");
 const closeBtn = document.querySelector(".close-btn");
 document.body.addEventListener("dblclick", () => {
     modal.style.display = "block";
-    eggTriggered = "Yes"; // Record that she found it!
+    eggTriggered = "Yes"; 
 });
 closeBtn.onclick = () => modal.style.display = "none";
 </script>
