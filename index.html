@@ -60,11 +60,6 @@ button {
     border-radius: 20px;
 }
 
-iframe {
-    margin-top: 20px;
-    border-radius: 15px;
-}
-
 .heart {
     position: fixed;
     color: red;
@@ -95,18 +90,12 @@ iframe {
 <br><br>
 
 <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank">
-Click here for our playlist 🎵
+Terry, click here for our mixtape 🎵
 </a>
 
 <br><br>
 
-<!-- Taylor Swift Player -->
-<iframe id="song"
-width="300"
-height="170"
-src=""
-allow="autoplay">
-</iframe>
+<div id="musicContainer"></div>
 
 </div>
 
@@ -125,7 +114,6 @@ function typeText() {
         setTimeout(typeText, 60);
     }
 }
-
 typeText();
 
 /* Buttons */
@@ -133,7 +121,7 @@ typeText();
 let yesBtn = document.getElementById("yesBtn");
 let noBtn = document.getElementById("noBtn");
 let celebration = document.getElementById("celebration");
-let song = document.getElementById("song");
+let musicContainer = document.getElementById("musicContainer");
 
 let noMessages = [
     "Are you sure?",
@@ -168,8 +156,14 @@ yesBtn.onclick = function() {
     createConfetti();
     startHearts();
 
-    /* Play Taylor Swift */
-    song.src = "https://www.youtube.com/embed/fvg01G6fo0s?autoplay=1";
+    /* Dynamically create music player */
+    musicContainer.innerHTML = `
+        <iframe width="300" height="170"
+        src="https://www.youtube.com/embed/fvg01G6fo0s?autoplay=1&mute=0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+        </iframe>
+    `;
 };
 
 /* Confetti */
@@ -215,7 +209,7 @@ function startHearts() {
     }, 400);
 }
 
-/* Secret Easter Egg */
+/* Easter Egg */
 
 document.body.addEventListener("dblclick", () => {
     alert("Secret unlocked: You are loved more than you know 💕");
