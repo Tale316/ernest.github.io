@@ -1,237 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Valentine Question</title>
-
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secret Page</title>
 
 <style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
 
-body {
-    font-family: 'Segoe UI', sans-serif;
-    text-align: center;
-    background: linear-gradient(45deg, #ffccd5, #ffe6f0, #ffd6e0);
-    background-size: 300% 300%;
-    animation: sparkle 8s infinite alternate;
-    margin: 20px;
-}
+    .container {
+        margin-top: 40px;
+    }
 
-@keyframes sparkle {
-    from { background-position: left; }
-    to { background-position: right; }
-}
+    img {
+        max-width: 90%;
+        height: auto;
+        border-radius: 12px;
+    }
 
-h1 {
-    font-size: 32px;
-    color: #ff1a75;
-    min-height: 60px;
-}
+    h1 {
+        margin-top: 20px;
+        font-size: 28px;
+    }
 
-button {
-    padding: 15px 25px;
-    font-size: 18px;
-    margin: 10px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+    .buttons {
+        margin-top: 20px;
+    }
 
-#yesBtn {
-    background-color: #4CAF50;
-    color: white;
-}
+    button {
+        padding: 12px 25px;
+        margin: 10px;
+        font-size: 18px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
 
-#noBtn {
-    background-color: #ff4d4d;
-    color: white;
-}
+    #yesBtn {
+        background-color: #ff4da6;
+        color: white;
+    }
 
-#celebration {
-    display: none;
-    font-size: 24px;
-    margin-top: 25px;
-    color: #cc0066;
-}
+    #noBtn {
+        background-color: gray;
+        color: white;
+        position: relative;
+    }
 
-.dog {
-    width: 80%;
-    max-width: 250px;
-    border-radius: 20px;
-}
+    button:hover {
+        transform: scale(1.1);
+    }
 
-.heart {
-    position: fixed;
-    color: red;
-    animation: floatUp 5s linear forwards;
-    font-size: 20px;
-}
+    .bottom-link {
+        position: fixed;
+        bottom: 10px;
+        width: 100%;
+        font-size: 14px;
+        opacity: 0.6;
+    }
 
-@keyframes floatUp {
-    from { transform: translateY(100vh); opacity: 1; }
-    to { transform: translateY(-10vh); opacity: 0; }
-}
-
-#musicContainer iframe {
-    animation: fadeIn 1.5s ease-in;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-}
-
+    .bottom-link a {
+        color: #ff4da6;
+        text-decoration: none;
+    }
 </style>
 </head>
 
 <body>
 
-<!-- Dog GIF -->
-<img id="dogGif" class="dog" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
+<div class="container">
 
-<h1 id="typingText"></h1>
+    <!-- GIF stays visible -->
+    <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Cute GIF">
 
-<button id="yesBtn">Yes</button>
-<button id="noBtn">No</button>
+    <!-- This whole section disappears after YES -->
+    <div id="valentineSection">
+        <h1>Tsuma, will you be my Valentine?</h1>
 
-<div id="celebration">
+        <div class="buttons">
+            <button id="yesBtn">Yes ❤️</button>
+            <button id="noBtn">No 😢</button>
+        </div>
+    </div>
 
-❤️ You just made me the happiest man on earth ❤️
-<br><br>
+</div>
 
-<a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank">
-Terry, click here for our mixtape 🎵
-</a>
-
-<br><br>
-
-<div id="musicContainer"></div>
-
+<!-- Bottom secret link -->
+<div class="bottom-link">
+    <a href="https://example.com" target="_blank">Click here</a>
 </div>
 
 <script>
 
-/* Typing Animation */
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const valentineSection = document.getElementById("valentineSection");
 
-let text = "Tsuma, will you be my Valentine? 💖";
-let typingElement = document.getElementById("typingText");
-let index = 0;
+    // YES button hides message and buttons
+    yesBtn.addEventListener("click", () => {
+        valentineSection.style.display = "none";
+        alert("You just made someone very happy ❤️");
+    });
 
-function typeText() {
-    if (index < text.length) {
-        typingElement.innerHTML += text.charAt(index);
-        index++;
-        setTimeout(typeText, 60);
-    }
-}
-typeText();
+    // NO button runs away (fun effect)
+    noBtn.addEventListener("mouseover", () => {
+        const x = Math.random() * window.innerWidth * 0.6;
+        const y = Math.random() * window.innerHeight * 0.6;
 
-/* Buttons */
-
-let yesBtn = document.getElementById("yesBtn");
-let noBtn = document.getElementById("noBtn");
-let celebration = document.getElementById("celebration");
-let musicContainer = document.getElementById("musicContainer");
-let dogGif = document.getElementById("dogGif");
-
-let noMessages = [
-    "Are you sure?",
-    "Really sure?",
-    "Please reconsider 😢",
-    "Don't do this to me",
-    "I baked cookies...",
-    "Last chance 🥺",
-    "You're breaking my heart 💔"
-];
-
-let noClickCount = 0;
-let yesSize = 18;
-
-noBtn.onclick = function() {
-
-    if (noClickCount < noMessages.length) {
-        noBtn.innerText = noMessages[noClickCount];
-    }
-
-    noClickCount++;
-
-    yesSize += 8;
-    yesBtn.style.fontSize = yesSize + "px";
-    yesBtn.style.padding = (yesSize) + "px " + (yesSize * 1.5) + "px";
-};
-
-yesBtn.onclick = function() {
-
-    /* Remove dog GIF */
-    if (dogGif) {
-        dogGif.remove();
-    }
-
-    celebration.style.display = "block";
-
-    createConfetti();
-    startHearts();
-
-    musicContainer.innerHTML = `
-        <iframe 
-        width="220" 
-        height="124"
-        style="border-radius:15px; margin-top:15px;"
-        src="https://www.youtube.com/embed/Zm61zM5R0Ss?autoplay=1"
-        allow="autoplay; encrypted-media"
-        allowfullscreen>
-        </iframe>
-    `;
-};
-
-/* Confetti */
-
-function createConfetti() {
-
-    for (let i = 0; i < 100; i++) {
-
-        let confetti = document.createElement("div");
-        confetti.style.position = "fixed";
-        confetti.style.width = "8px";
-        confetti.style.height = "8px";
-        confetti.style.left = Math.random() * 100 + "vw";
-        confetti.style.top = "-10px";
-        confetti.style.backgroundColor =
-            "hsl(" + Math.random() * 360 + ", 100%, 50%)";
-
-        confetti.style.animation = "floatUp 4s linear forwards";
-
-        document.body.appendChild(confetti);
-
-        setTimeout(() => confetti.remove(), 4000);
-    }
-}
-
-/* Floating Hearts */
-
-function startHearts() {
-
-    setInterval(() => {
-
-        let heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerHTML = "❤️";
-
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = Math.random() * 20 + 15 + "px";
-
-        document.body.appendChild(heart);
-
-        setTimeout(() => heart.remove(), 5000);
-
-    }, 400);
-}
-
-/* Easter Egg */
-
-document.body.addEventListener("dblclick", () => {
-    alert("Secret unlocked: You are loved more than you know 💕");
-});
+        noBtn.style.position = "absolute";
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+    });
 
 </script>
 
