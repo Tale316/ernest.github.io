@@ -2,13 +2,10 @@
 <html>
 <head>
 <title>Valentine Question</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
-/* Body acts as the background/centering environment */
 body {
     font-family: 'Segoe UI', sans-serif;
     display: flex;
@@ -19,7 +16,7 @@ body {
     background-size: 300% 300%;
     animation: sparkle 8s infinite alternate;
     margin: 0;
-    overflow-x: hidden;
+    overflow: hidden;
     touch-action: manipulation; 
 }
 
@@ -28,7 +25,6 @@ body {
     to { background-position: right; }
 }
 
-/* The Main Container (The Card) */
 .main-card {
     background: rgba(255, 255, 255, 0.7); 
     backdrop-filter: blur(10px);
@@ -39,10 +35,10 @@ body {
     display: inline-block; 
     max-width: 90%;
     text-align: center;
-    transition: all 0.3s ease; 
+    position: relative;
+    z-index: 10;
 }
 
-/* Darker Gold Gradient for Readability */
 .golden-melody {
     font-family: 'Great Vibes', cursive;
     background: linear-gradient(to bottom, #B8860B 0%, #D4AF37 50%, #8B4513 100%);
@@ -50,15 +46,9 @@ body {
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.2));
     font-weight: normal;
-    padding-bottom: 10px; 
 }
 
-h1 {
-    font-size: 50px; 
-    min-height: 80px;
-    margin-top: 10px;
-    line-height: 1.2;
-}
+h1 { font-size: 50px; min-height: 80px; margin-top: 10px; }
 
 button {
     padding: 15px 25px;
@@ -68,123 +58,64 @@ button {
     border-radius: 12px;
     cursor: pointer;
     transition: 0.3s;
-    white-space: nowrap; 
 }
 
-#yesBtn {
-    background-color: #4CAF50;
-    color: white;
-}
+#yesBtn { background-color: #4CAF50; color: white; }
+#noBtn { background-color: #ff4d4d; color: white; }
 
-#noBtn {
-    background-color: #ff4d4d;
-    color: white;
-}
+#celebration { display: none; font-size: 35px; margin-top: 25px; }
 
-#celebration {
-    display: none;
-    font-size: 35px;
-    margin-top: 25px;
+.mixtape-link {
+    text-decoration: none; font-size: 18px; font-weight: bold;
+    animation: colorChange 3s infinite; display: block; margin-top: 20px;
 }
 
 @keyframes colorChange {
-    0% { color: #ff1a75; }
-    33% { color: #1DB954; }
-    66% { color: #007bff; }
-    100% { color: #ff1a75; }
+    0%, 100% { color: #ff1a75; }
+    50% { color: #1DB954; }
 }
 
-.mixtape-link {
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-    animation: colorChange 3s infinite;
-    display: block; 
-    margin-top: 20px;
-}
-
-.underline-text {
-    text-decoration: underline;
-}
+.underline-text { text-decoration: underline; }
 
 #musicToggleBtn {
-    display: none; 
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    padding: 12px 18px;
-    font-size: 14px;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #333;
-    border: 2px solid #B8860B; 
-    border-radius: 50px;
-    z-index: 1000;
+    display: none; position: fixed; bottom: 20px; left: 20px;
+    padding: 12px 18px; font-size: 14px; background-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid #B8860B; border-radius: 50px; z-index: 1000;
 }
 
-.dog {
-    width: 100%;
-    max-width: 250px;
-    border-radius: 20px;
+.dog { width: 100%; max-width: 250px; border-radius: 20px; }
+
+/* Modal Styles */
+.modal {
+    display: none; position: fixed; z-index: 2000; left: 0; top: 0;
+    width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fff0f5; margin: 20% auto; padding: 30px;
+    border: 3px solid #ff1a75; border-radius: 20px; width: 80%; max-width: 300px;
+    text-align: center; color: #cc0066; font-size: 24px; font-family: 'Great Vibes', cursive;
+}
+
+.close-btn { float: right; font-size: 28px; cursor: pointer; font-family: sans-serif; }
+
+/* Physics elements */
+.confetti {
+    position: fixed;
+    pointer-events: none;
+    z-index: 15;
 }
 
 .heart {
     position: fixed;
     color: red;
     animation: floatUp 5s linear forwards;
-    font-size: 20px;
-    z-index: 999;
+    z-index: 5;
 }
 
 @keyframes floatUp {
-    from { transform: translateY(100vh); opacity: 1; }
+    from { transform: translateY(110vh); opacity: 1; }
     to { transform: translateY(-10vh); opacity: 0; }
-}
-
-/* --- EASTER EGG POPUP STYLES --- */
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 2000; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(0,0,0,0.5); 
-    animation: fadeIn 0.3s;
-}
-
-.modal-content {
-    background-color: #fff0f5;
-    margin: 20% auto; 
-    padding: 30px;
-    border: 3px solid #ff1a75;
-    border-radius: 20px;
-    width: 80%;
-    max-width: 300px;
-    text-align: center;
-    color: #cc0066;
-    font-size: 22px;
-    font-family: 'Great Vibes', cursive; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
-
-.close-btn {
-    color: #ff1a75;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    font-family: 'Segoe UI', sans-serif;
-    line-height: 20px;
-}
-
-.close-btn:hover {
-    color: #cc0066;
-}
-
-@keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
 }
 </style>
 </head>
@@ -199,15 +130,13 @@ button {
 
 <div id="easterEggModal" class="modal">
     <div class="modal-content">
-        <span class="close-btn">×</span>
+        <span class="close-btn">&times;</span>
         <p>Easter egg found : <br> I Love you more than you realize ❤️</p>
     </div>
 </div>
 
 <div class="main-card">
-    
     <img id="dogGif" class="dog" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
-
     <div id="interaction-box">
         <h1 id="typingText" class="golden-melody"></h1>
         <div id="buttonContainer">
@@ -215,21 +144,19 @@ button {
             <button id="noBtn">No</button>
         </div>
     </div>
-
     <div id="celebration">
         <div class="golden-melody">❤️ You just made me the happiest man on earth ❤️</div>
         <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank" class="mixtape-link">
             Terry, click <span class="underline-text">here</span> for our mixtape 🎵
         </a>
     </div>
-
 </div>
 
 <script>
+// Typing Logic
 let text = "Tsuma, will you be my Valentine? 💖";
 let typingElement = document.getElementById("typingText");
 let index = 0;
-
 function typeText() {
     if (index < text.length) {
         typingElement.innerHTML += text.charAt(index);
@@ -239,39 +166,38 @@ function typeText() {
 }
 typeText();
 
-let yesBtn = document.getElementById("yesBtn");
-let noBtn = document.getElementById("noBtn");
-let interactionBox = document.getElementById("interaction-box");
-let celebration = document.getElementById("celebration");
-let bgMusic = document.getElementById("bgMusic");
-let toggleBtn = document.getElementById("musicToggleBtn");
+// UI Elements
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const interactionBox = document.getElementById("interaction-box");
+const celebration = document.getElementById("celebration");
+const bgMusic = document.getElementById("bgMusic");
+const toggleBtn = document.getElementById("musicToggleBtn");
 
 let noMessages = ["Are you sure?", "Really sure?", "Please reconsider 😢", "Don't do this to me", "Last chance 🥺", "You're breaking my heart 💔"];
 let noClickCount = 0;
 let yesSize = 18;
 
-noBtn.onclick = function() {
-    if (noClickCount < noMessages.length) {
-        noBtn.innerText = noMessages[noClickCount];
-    }
+noBtn.onclick = () => {
+    if (noClickCount < noMessages.length) noBtn.innerText = noMessages[noClickCount];
     noClickCount++;
-    yesSize += 15; 
+    yesSize += 15;
     yesBtn.style.fontSize = yesSize + "px";
-    yesBtn.style.padding = (yesSize) + "px " + (yesSize * 1.2) + "px";
+    yesBtn.style.padding = `${yesSize}px ${yesSize * 1.2}px`;
 };
 
-yesBtn.onclick = function() {
+yesBtn.onclick = () => {
     interactionBox.style.display = "none";
     celebration.style.display = "block";
     toggleBtn.style.display = "block"; 
-
-    bgMusic.play().catch(e => console.log("Playback blocked:", e));
-
-    createConfetti();
+    bgMusic.play().catch(e => console.log("Blocked:", e));
+    
+    // Trigger Natural Physics Confetti
+    fireConfetti();
     startHearts();
 };
 
-toggleBtn.onclick = function() {
+toggleBtn.onclick = () => {
     if (bgMusic.paused) {
         bgMusic.play();
         toggleBtn.innerText = "Stop Music 🔇";
@@ -281,25 +207,61 @@ toggleBtn.onclick = function() {
     }
 };
 
-function createConfetti() {
-    for (let i = 0; i < 100; i++) {
-        let confetti = document.createElement("div");
-        confetti.style.position = "fixed";
-        confetti.style.width = "8px";
-        confetti.style.height = "8px";
-        confetti.style.left = Math.random() * 100 + "vw";
-        confetti.style.top = "-10px";
-        confetti.style.backgroundColor = "hsl(" + Math.random() * 360 + ", 100%, 50%)";
-        confetti.style.animation = "floatUp 4s linear forwards";
-        document.body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 4000);
+/* NATURAL CONFETTI PHYSICS */
+function fireConfetti() {
+    const count = 150;
+    const particles = [];
+    
+    for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'confetti';
+        // Random shapes/colors
+        const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        p.style.backgroundColor = color;
+        p.style.width = Math.random() * 10 + 5 + 'px';
+        p.style.height = Math.random() * 10 + 5 + 'px';
+        
+        document.body.appendChild(p);
+        
+        particles.push({
+            el: p,
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+            vX: (Math.random() - 0.5) * 25, // Initial explosion horizontal
+            vY: (Math.random() - 0.8) * 25, // Initial explosion vertical
+            gravity: 0.5,
+            drag: 0.97,
+            rotation: Math.random() * 360,
+            vR: Math.random() * 10 - 5
+        });
     }
+
+    function update() {
+        particles.forEach((p, i) => {
+            p.vY += p.gravity;
+            p.vX *= p.drag;
+            p.vY *= p.drag;
+            p.x += p.vX;
+            p.y += p.vY;
+            p.rotation += p.vR;
+            
+            p.el.style.transform = `translate(${p.x}px, ${p.y}px) rotate(${p.rotation}deg)`;
+            
+            // Remove if off screen
+            if (p.y > window.innerHeight + 100) {
+                p.el.remove();
+                particles.splice(i, 1);
+            }
+        });
+        if (particles.length > 0) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
 }
 
 function startHearts() {
     setInterval(() => {
-        let heart = document.createElement("div");
-        heart.classList.add("heart");
+        const heart = document.createElement("div");
+        heart.className = "heart";
         heart.innerHTML = "❤️";
         heart.style.left = Math.random() * 100 + "vw";
         heart.style.fontSize = Math.random() * 20 + 15 + "px";
@@ -308,22 +270,11 @@ function startHearts() {
     }, 400);
 }
 
-/* --- EASTER EGG LOGIC --- */
-let modal = document.getElementById("easterEggModal");
-let closeBtn = document.getElementsByClassName("close-btn")[0];
-
-// Double click/tap on body to show modal
-document.body.addEventListener("dblclick", () => {
-    modal.style.display = "block";
-});
-
-// Close ONLY when clicking the X
-closeBtn.onclick = function() {
-    modal.style.display = "none";
-}
-
-// I removed the window.onclick code here. 
-// Now, clicking the background (the modal itself) does nothing.
+/* Modal Logic */
+const modal = document.getElementById("easterEggModal");
+const closeBtn = document.querySelector(".close-btn");
+document.body.addEventListener("dblclick", () => modal.style.display = "block");
+closeBtn.onclick = () => modal.style.display = "none";
 </script>
 
 </body>
