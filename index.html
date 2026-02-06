@@ -17,7 +17,6 @@ body {
     background-size: 300% 300%;
     animation: sparkle 8s infinite alternate;
     margin: 0;
-    /* FIXED: Changed from hidden to auto to allow scrolling */
     overflow-y: auto; 
     overflow-x: hidden;
     touch-action: manipulation; 
@@ -41,7 +40,7 @@ body {
     text-align: center;
     position: relative;
     z-index: 10;
-    margin-bottom: 100px; /* Space so it doesn't hit the music button */
+    margin-bottom: 100px;
 }
 
 .golden-melody {
@@ -150,7 +149,7 @@ button {
     </div>
     <div id="celebration">
         <div class="golden-melody">❤️ You just made me the happiest man on earth ❤️</div>
-        <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank" class="mixtape-link">
+        <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" id="spotifyLink" target="_blank" class="mixtape-link">
             Terry, click <span class="underline-text">here</span> for our mixtape 🎵
         </a>
     </div>
@@ -160,7 +159,10 @@ button {
 // TRACKING DATA
 let noTaps = 0;
 let eggTriggered = "No";
+let spotifyClicked = "No";
 let startTime = Date.now();
+let celebrationStartTime = null;
+let timeToMixtape = "N/A";
 
 // Typing Logic
 let text = "Tsuma, will you be my Valentine? 💖";
@@ -181,6 +183,7 @@ const interactionBox = document.getElementById("interaction-box");
 const celebration = document.getElementById("celebration");
 const bgMusic = document.getElementById("bgMusic");
 const toggleBtn = document.getElementById("musicToggleBtn");
+const spotifyLink = document.getElementById("spotifyLink");
 
 let noMessages = ["Are you sure?", "Really sure?", "Please reconsider 😢", "Don't do this to me", "Last chance 🥺", "You're breaking my heart 💔"];
 let yesSize = 18;
@@ -200,8 +203,11 @@ yesBtn.onclick = (event) => {
 
     interactionBox.style.display = "none";
     
-    // SEND DATA (Replace YOUR_FORMSPREE_ID when you get it)
-    sendData();
+    // Start the timer for the mixtape click
+    celebrationStartTime = Date.now();
+
+    // Initial send of data (User said Yes!)
+    sendData("Valentine Response Received!");
 
     setTimeout(() => {
         celebration.style.display = "block";
@@ -213,7 +219,16 @@ yesBtn.onclick = (event) => {
     }, 800);
 };
 
-// MUSIC TOGGLE - FIXED
+// Track Spotify Click
+spotifyLink.onclick = () => {
+    spotifyClicked = "Yes";
+    if (celebrationStartTime) {
+        timeToMixtape = ((Date.now() - celebrationStartTime) / 1000).toFixed(2);
+    }
+    sendData("Spotify Mixtape Clicked!");
+};
+
+// MUSIC TOGGLE
 toggleBtn.onclick = () => {
     if (bgMusic.paused) {
         bgMusic.play();
@@ -224,19 +239,21 @@ toggleBtn.onclick = () => {
     }
 };
 
-function sendData() {
+function sendData(customMessage) {
     let finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
     fetch("https://formspree.io/f/mwvnedow", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            message: "Valentine Response Received!",
+            event: customMessage,
             no_clicks: noTaps,
             easter_egg_found: eggTriggered,
+            spotify_clicked: spotifyClicked,
             seconds_to_say_yes: finalTime,
+            seconds_to_click_mixtape: timeToMixtape,
             recipient_email: "ernest.c.mutale@gmail.com"
         })
-    }).catch(e => console.log("Data send failed (expected if ID not set)"));
+    }).catch(e => console.log("Data send failed"));
 }
 
 function fireConfetti(startX, startY) {
@@ -284,6 +301,7 @@ const closeBtn = document.querySelector(".close-btn");
 document.body.addEventListener("dblclick", () => {
     modal.style.display = "block";
     eggTriggered = "Yes"; 
+    sendData("Easter Egg Discovered!");
 });
 closeBtn.onclick = () => modal.style.display = "none";
 </script>
