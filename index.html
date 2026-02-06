@@ -3,145 +3,176 @@
 <head>
     <title>Valentine Question</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #ffe6f0;
-            margin-top: 100px;
-        }
+<style>
 
-        h1 {
-            font-size: 40px;
-            color: #ff0066;
-        }
+body {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    background: linear-gradient(to bottom right, #ffccd5, #ffe6f0);
+    margin-top: 50px;
+}
 
-        button {
-            padding: 15px 30px;
-            font-size: 20px;
-            margin: 10px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+h1 {
+    font-size: 42px;
+    color: #ff1a75;
+}
 
-        #yesBtn {
-            background-color: #4CAF50;
-            color: white;
-        }
+button {
+    padding: 15px 30px;
+    font-size: 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        #noBtn {
-            background-color: #ff4d4d;
-            color: white;
-        }
+#yesBtn {
+    background-color: #4CAF50;
+    color: white;
+}
 
-        #celebration {
-            display: none;
-            font-size: 30px;
-            margin-top: 40px;
-            color: purple;
-            animation: pop 1s infinite alternate;
-        }
+#noBtn {
+    background-color: #ff4d4d;
+    color: white;
+}
 
-        @keyframes pop {
-            from { transform: scale(1); }
-            to { transform: scale(1.2); }
-        }
+#celebration {
+    display: none;
+    font-size: 28px;
+    margin-top: 30px;
+    color: #cc0066;
+}
 
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background-color: red;
-            top: -10px;
-            animation: fall linear forwards;
-        }
+a {
+    font-size: 22px;
+    color: purple;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
-            }
-        }
-    </style>
+a:hover {
+    text-decoration: underline;
+}
 
+.dog {
+    width: 250px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+    }
+}
+
+</style>
 </head>
 
 <body>
 
-<h1>Tsuma Will you be my Valentine? 💖</h1>
+<!-- Cute Dog GIF -->
+<img class="dog" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
+
+<h1>Tsuma, will you be my Valentine? 💖</h1>
 
 <button id="yesBtn">Yes</button>
 <button id="noBtn">No</button>
 
 <div id="celebration">
-    🎉 Yay!!! 🎉 <br><br>
-    Now click this link ❤️ <br><br>
+    ❤️ You just made me the happiest man on earth ❤️
+    <br><br>
+
     <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank">
-        Open Spotify Playlist
+        Click here for our playlist 🎵
     </a>
+
+    <br><br>
+
+    <!-- Taylor Swift Enchanted -->
+    <iframe id="song"
+        width="0"
+        height="0"
+        src=""
+        frameborder="0"
+        allow="autoplay">
+    </iframe>
+
 </div>
 
 <script>
-    let yesBtn = document.getElementById("yesBtn");
-    let noBtn = document.getElementById("noBtn");
-    let celebration = document.getElementById("celebration");
 
-    let noMessages = [
-        "Are you sure?",
-        "Really sure?",
-        "Please reconsider 😢",
-        "Don't do this to me",
-        "I baked cookies...",
-        "Last chance 🥺",
-        "You're breaking my heart 💔"
-    ];
+let yesBtn = document.getElementById("yesBtn");
+let noBtn = document.getElementById("noBtn");
+let celebration = document.getElementById("celebration");
+let song = document.getElementById("song");
 
-    let noClickCount = 0;
-    let yesSize = 20;
+let noMessages = [
+    "Are you sure?",
+    "Really sure?",
+    "Please reconsider 😢",
+    "Don't do this to me",
+    "I baked cookies...",
+    "Last chance 🥺",
+    "You're breaking my heart 💔"
+];
 
-    noBtn.onclick = function() {
+let noClickCount = 0;
+let yesSize = 20;
 
-        if (noClickCount < noMessages.length) {
-            noBtn.innerText = noMessages[noClickCount];
-        } else {
-            noBtn.innerText = "No";
-        }
+noBtn.onclick = function() {
 
-        noClickCount++;
-
-        yesSize += 10;
-        yesBtn.style.fontSize = yesSize + "px";
-        yesBtn.style.padding = (yesSize) + "px " + (yesSize * 2) + "px";
-    };
-
-    yesBtn.onclick = function() {
-
-        celebration.style.display = "block";
-
-        createConfetti();
-    };
-
-    function createConfetti() {
-
-        for (let i = 0; i < 100; i++) {
-
-            let confetti = document.createElement("div");
-            confetti.classList.add("confetti");
-
-            confetti.style.left = Math.random() * 100 + "vw";
-            confetti.style.backgroundColor = 
-                "hsl(" + Math.random() * 360 + ", 100%, 50%)";
-
-            confetti.style.animationDuration = (Math.random() * 3 + 2) + "s";
-
-            document.body.appendChild(confetti);
-
-            setTimeout(() => {
-                confetti.remove();
-            }, 5000);
-        }
+    if (noClickCount < noMessages.length) {
+        noBtn.innerText = noMessages[noClickCount];
     }
+
+    noClickCount++;
+
+    yesSize += 10;
+    yesBtn.style.fontSize = yesSize + "px";
+    yesBtn.style.padding = (yesSize) + "px " + (yesSize * 2) + "px";
+};
+
+yesBtn.onclick = function() {
+
+    celebration.style.display = "block";
+
+    createConfetti();
+
+    // Plays Taylor Swift Enchanted from YouTube
+    song.src = "https://www.youtube.com/embed/fvg01G6fo0s?autoplay=1";
+};
+
+function createConfetti() {
+
+    for (let i = 0; i < 120; i++) {
+
+        let confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.backgroundColor =
+            "hsl(" + Math.random() * 360 + ", 100%, 50%)";
+
+        confetti.style.animationDuration = (Math.random() * 3 + 2) + "s";
+
+        document.body.appendChild(confetti);
+
+        setTimeout(() => {
+            confetti.remove();
+        }, 5000);
+    }
+}
+
 </script>
 
 </body>
