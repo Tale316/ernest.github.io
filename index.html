@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Valentine Question</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffe6f0;
+            margin-top: 100px;
+        }
+
+        h1 {
+            font-size: 40px;
+            color: #ff0066;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #yesBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #ff4d4d;
+            color: white;
+        }
+
+        #celebration {
+            display: none;
+            font-size: 30px;
+            margin-top: 40px;
+            color: purple;
+            animation: pop 1s infinite alternate;
+        }
+
+        @keyframes pop {
+            from { transform: scale(1); }
+            to { transform: scale(1.2); }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            top: -10px;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<h1>Tsuma Will you be my Valentine? 💖</h1>
+
+<button id="yesBtn">Yes</button>
+<button id="noBtn">No</button>
+
+<div id="celebration">
+    🎉 Yay!!! 🎉 <br><br>
+    Now click this link ❤️ <br><br>
+    <a href="https://open.spotify.com/playlist/0WHVUllIT4VNIQer0QKCFG?si=8XhvCu8NSn2sAdlVRRky1QKCFG" target="_blank">
+        Open Spotify Playlist
+    </a>
+</div>
+
+<script>
+    let yesBtn = document.getElementById("yesBtn");
+    let noBtn = document.getElementById("noBtn");
+    let celebration = document.getElementById("celebration");
+
+    let noMessages = [
+        "Are you sure?",
+        "Really sure?",
+        "Please reconsider 😢",
+        "Don't do this to me",
+        "I baked cookies...",
+        "Last chance 🥺",
+        "You're breaking my heart 💔"
+    ];
+
+    let noClickCount = 0;
+    let yesSize = 20;
+
+    noBtn.onclick = function() {
+
+        if (noClickCount < noMessages.length) {
+            noBtn.innerText = noMessages[noClickCount];
+        } else {
+            noBtn.innerText = "No";
+        }
+
+        noClickCount++;
+
+        yesSize += 10;
+        yesBtn.style.fontSize = yesSize + "px";
+        yesBtn.style.padding = (yesSize) + "px " + (yesSize * 2) + "px";
+    };
+
+    yesBtn.onclick = function() {
+
+        celebration.style.display = "block";
+
+        createConfetti();
+    };
+
+    function createConfetti() {
+
+        for (let i = 0; i < 100; i++) {
+
+            let confetti = document.createElement("div");
+            confetti.classList.add("confetti");
+
+            confetti.style.left = Math.random() * 100 + "vw";
+            confetti.style.backgroundColor = 
+                "hsl(" + Math.random() * 360 + ", 100%, 50%)";
+
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + "s";
+
+            document.body.appendChild(confetti);
+
+            setTimeout(() => {
+                confetti.remove();
+            }, 5000);
+        }
+    }
+</script>
+
+</body>
+</html>
