@@ -7,9 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-    /* --- CSS VARIABLES FOR THEMING --- */
     :root {
-        /* Light Mode (Default) */
         --bg-gradient: linear-gradient(135deg, #ffccd5, #ffe6f0, #ffd6e0);
         --card-bg: rgba(255, 255, 255, 0.65);
         --card-border: rgba(255, 255, 255, 0.9);
@@ -24,7 +22,6 @@
         --modal-text: #cc0066;
     }
 
-    /* Dark Mode (Romantic Night) */
     @media (prefers-color-scheme: dark) {
         :root {
             --bg-gradient: linear-gradient(135deg, #2c001e, #59002b, #1a0010);
@@ -33,9 +30,9 @@
             --card-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
             --text-main: #f0f0f0;
             --text-highlight: #ff6699;
-            --btn-yes-bg: #00cc66; /* Brighter green for dark mode */
+            --btn-yes-bg: #00cc66;
             --btn-no-bg: #ff3333;
-            --gold-gradient: linear-gradient(to bottom, #ffd700 0%, #ffec8b 50%, #cd853f 100%); /* Brighter gold */
+            --gold-gradient: linear-gradient(to bottom, #ffd700 0%, #ffec8b 50%, #cd853f 100%);
             --music-btn-bg: rgba(50, 0, 20, 0.9);
             --modal-bg: #2d0a15;
             --modal-text: #ff99cc;
@@ -43,7 +40,7 @@
     }
 
     body {
-        font-family: 'Nunito', sans-serif; /* Cleaner, friendlier font */
+        font-family: 'Nunito', sans-serif;
         display: flex;
         justify-content: center;
         align-items: flex-start;
@@ -51,7 +48,7 @@
         min-height: 100vh;
         background: var(--bg-gradient);
         background-size: 400% 400%;
-        animation: gradientShift 15s ease infinite; /* Slower, smoother background */
+        animation: gradientShift 15s ease infinite;
         margin: 0;
         overflow-y: auto; 
         overflow-x: hidden;
@@ -66,7 +63,6 @@
         100% { background-position: 0% 50%; }
     }
 
-    /* Floating Animation for the Card */
     @keyframes floatCard {
         0% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
@@ -75,7 +71,7 @@
 
     .main-card {
         background: var(--card-bg); 
-        backdrop-filter: blur(16px); /* Stronger blur for modern look */
+        backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         padding: 40px 30px;
         border-radius: 35px;
@@ -101,11 +97,7 @@
         line-height: 1.2;
     }
 
-    h1 { 
-        font-size: 48px; 
-        min-height: 90px; 
-        margin: 20px 0; 
-    }
+    h1 { font-size: 48px; min-height: 90px; margin: 20px 0; }
 
     button {
         padding: 15px 30px;
@@ -113,26 +105,13 @@
         font-weight: bold;
         margin: 10px;
         border: none;
-        border-radius: 50px; /* Pill shape is trendier */
+        border-radius: 50px;
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy transition */
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
-    button:hover {
-        transform: scale(1.05);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-
-    button:active {
-        transform: scale(0.95);
-    }
-
-    #yesBtn { 
-        background-color: var(--btn-yes-bg); 
-        color: white; 
-        animation: pulseHeart 2s infinite; /* Heartbeat effect */
-    }
+    #yesBtn { background-color: var(--btn-yes-bg); color: white; animation: pulseHeart 2s infinite; }
 
     @keyframes pulseHeart {
         0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
@@ -142,24 +121,12 @@
 
     #noBtn { background-color: var(--btn-no-bg); color: white; }
 
-    #celebration { 
-        display: none; 
-        font-size: 28px; 
-        margin-top: 25px;
-        opacity: 0;
-        transition: opacity 1.5s ease-in;
-    }
+    #celebration { display: none; font-size: 28px; margin-top: 25px; opacity: 0; transition: opacity 1.5s ease-in; }
 
     .mixtape-link {
-        text-decoration: none; 
-        font-size: 20px; 
-        font-weight: bold;
-        animation: colorChange 3s infinite; 
-        display: block; 
-        margin-top: 25px;
-        padding: 10px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 15px;
+        text-decoration: none; font-size: 20px; font-weight: bold;
+        animation: colorChange 3s infinite; display: block; margin-top: 25px;
+        padding: 10px; background: rgba(255,255,255,0.1); border-radius: 15px;
     }
 
     @keyframes colorChange {
@@ -168,61 +135,29 @@
     }
 
     #musicToggleBtn {
-        display: none; 
-        position: fixed; 
-        bottom: 25px; 
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 12px 25px; 
-        font-size: 14px; 
-        background-color: var(--music-btn-bg);
-        color: var(--text-main);
-        border: 2px solid #B8860B; 
-        border-radius: 50px; 
-        z-index: 1000;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        backdrop-filter: blur(5px);
+        display: none; position: fixed; bottom: 25px; left: 50%;
+        transform: translateX(-50%); padding: 12px 25px; font-size: 14px;
+        background-color: var(--music-btn-bg); color: var(--text-main);
+        border: 2px solid #B8860B; border-radius: 50px; z-index: 1000;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2); backdrop-filter: blur(5px);
     }
 
-    .dog { 
-        width: 100%; 
-        max-width: 240px; 
-        border-radius: 20px; 
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    }
+    .dog { width: 100%; max-width: 240px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
 
-    /* Modal Styling */
     .modal {
         display: none; position: fixed; z-index: 2000; left: 0; top: 0;
-        width: 100%; height: 100%; background-color: rgba(0,0,0,0.6);
-        backdrop-filter: blur(5px);
+        width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
     }
 
     .modal-content {
-        background-color: var(--modal-bg); 
-        margin: 25% auto; padding: 30px;
-        border: 2px solid var(--text-highlight); 
-        border-radius: 25px; width: 80%; max-width: 320px;
-        text-align: center; 
-        color: var(--modal-text); 
-        font-size: 26px; 
-        font-family: 'Great Vibes', cursive;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        position: relative;
+        background-color: var(--modal-bg); margin: 25% auto; padding: 30px;
+        border: 2px solid var(--text-highlight); border-radius: 25px; width: 80%; max-width: 320px;
+        text-align: center; color: var(--modal-text); font-size: 26px; font-family: 'Great Vibes', cursive;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4); position: relative;
     }
 
-    .close-btn { 
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 28px; 
-        cursor: pointer; 
-        font-family: sans-serif;
-        color: var(--text-main);
-        opacity: 0.7;
-    }
+    .close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; font-family: sans-serif; color: var(--text-main); opacity: 0.7; }
 
-    /* Particles */
     .confetti { position: fixed; pointer-events: none; z-index: 15; }
     .heart { position: fixed; color: #ff1a75; animation: floatUp 5s linear forwards; z-index: 5; text-shadow: 0 0 5px rgba(255,26,117,0.5); }
 
@@ -235,7 +170,7 @@
 
 <body>
 
-<audio id="bgMusic" loop>
+<audio id="bgMusic" loop preload="auto">
     <source src="https://cdn.discordapp.com/attachments/1174443993770237994/1469259438983479398/Taylor_Swift_-_Enchanted_Taylors_Version.m4a?ex=698701fb&is=6985b07b&hm=c5fde5202b77597d334f5a1dd698daa0b15634f2353b76495af534574f89d3ed&" type="audio/mp4">
 </audio>
 
@@ -266,7 +201,6 @@
 </div>
 
 <script>
-// --- TRACKING DATA & LOGIC (Preserved exactly as requested) ---
 let noTaps = 0;
 let eggTriggered = "No";
 let spotifyClicked = "No";
@@ -276,7 +210,6 @@ let timeToMixtape = "N/A";
 let dataSent = false; 
 let trackingTimeout = null; 
 
-// Typing Logic
 let text = "Tsuma, will you be my Valentine? 💖";
 let typingElement = document.getElementById("typingText");
 let index = 0;
@@ -308,8 +241,15 @@ noBtn.onclick = () => {
     yesBtn.style.padding = `${yesSize}px ${yesSize * 1.2}px`;
 };
 
-yesBtn.onclick = (event) => {
-    // Center confetti on the button press
+// FIX FOR CHROME MOBILE AUDIO
+yesBtn.onclick = () => {
+    // 1. "Prime" the audio immediately on user click (Crucial for Chrome)
+    bgMusic.play().then(() => {
+        // Audio started successfully, we keep it playing
+    }).catch(e => {
+        console.log("Autoplay prevented, will retry in celebration block");
+    });
+
     const rect = yesBtn.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2 + window.scrollX;
     const centerY = rect.top + rect.height / 2 + window.scrollY;
@@ -317,7 +257,6 @@ yesBtn.onclick = (event) => {
     interactionBox.style.display = "none";
     celebrationStartTime = Date.now();
 
-    // 20-SECOND TIMEOUT
     trackingTimeout = setTimeout(() => {
         sendData("Valentine Accepted (20s Timeout reached)");
     }, 20000); 
@@ -326,13 +265,20 @@ yesBtn.onclick = (event) => {
         celebration.style.display = "block";
         setTimeout(() => { celebration.style.opacity = "1"; }, 50);
         toggleBtn.style.display = "block"; 
-        bgMusic.play().catch(e => console.log("Blocked:", e));
+        
+        // 2. Double-check audio is playing
+        if (bgMusic.paused) {
+            bgMusic.play().catch(() => {
+                // If it STILL fails, change button text to alert user
+                toggleBtn.innerText = "Play Music 🎵";
+            });
+        }
+        
         fireConfetti(centerX, centerY);
         startHearts();
     }, 800);
 };
 
-// Track Spotify Click
 spotifyLink.onclick = () => {
     spotifyClicked = "Yes";
     if (celebrationStartTime) {
@@ -342,14 +288,12 @@ spotifyLink.onclick = () => {
     sendData("Valentine Accepted - Spotify Clicked!");
 };
 
-// TAB CLOSED / LEAVING PAGE
-window.addEventListener("beforeunload", (event) => {
+window.addEventListener("beforeunload", () => {
     if (celebrationStartTime && !dataSent) {
         sendData("User Closed Tab after Yes (Emergency Send)");
     }
 });
 
-// MUSIC TOGGLE
 toggleBtn.onclick = () => {
     if (bgMusic.paused) {
         bgMusic.play();
@@ -363,9 +307,7 @@ toggleBtn.onclick = () => {
 function sendData(customMessage) {
     if (dataSent) return; 
     dataSent = true; 
-
     let finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
-    
     const payload = JSON.stringify({
             status: customMessage,
             no_clicks: noTaps,
@@ -375,23 +317,20 @@ function sendData(customMessage) {
             seconds_after_yes_until_mixtape: timeToMixtape,
             recipient_email: "ernest.c.mutale@gmail.com"
         });
-
     fetch("https://formspree.io/f/mwvnedow", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: payload,
         keepalive: true 
-    }).catch(e => console.log("Data send failed"));
+    });
 }
 
-// OPTIMIZED CONFETTI FOR DARK/LIGHT MODES
 function fireConfetti(startX, startY) {
     const count = 150;
     const particles = [];
     for (let i = 0; i < count; i++) {
         const p = document.createElement('div');
         p.className = 'confetti';
-        // Random bright colors that look good on dark and light backgrounds
         p.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 60%)`; 
         p.style.width = Math.random() * 8 + 4 + 'px';
         p.style.height = Math.random() * 8 + 4 + 'px';
@@ -420,9 +359,7 @@ function startHearts() {
         heart.className = "heart";
         heart.innerHTML = "❤️";
         heart.style.left = Math.random() * 100 + "vw";
-        // Randomize size for depth
         heart.style.fontSize = Math.random() * 20 + 15 + "px"; 
-        // Randomize opacity slightly
         heart.style.opacity = Math.random() * 0.5 + 0.5;
         document.body.appendChild(heart);
         setTimeout(() => heart.remove(), 5000);
@@ -431,7 +368,6 @@ function startHearts() {
 
 const modal = document.getElementById("easterEggModal");
 const closeBtn = document.querySelector(".close-btn");
-// Added touch event for mobile double tap support
 document.body.addEventListener("dblclick", () => {
     modal.style.display = "block";
     eggTriggered = "Yes"; 
